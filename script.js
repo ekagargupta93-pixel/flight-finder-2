@@ -10,7 +10,11 @@ const mockFlights = [
     departure: "10:30 AM",
     arrival: "4:15 PM",
     isSelfTransfer: true,
-    transferNote: "Self-transfer at ATL"
+    transferNote: "Self-transfer at ATL",
+    transferAirport: "ATL",
+    transferTime: "2h 15m",
+    visaRequirement: "No visa required",
+    riskNote: "Low risk - Major hub, frequent connections"
   },
   {
     airline: "American Airlines",
@@ -20,7 +24,11 @@ const mockFlights = [
     departure: "8:15 AM",
     arrival: "2:35 PM",
     isSelfTransfer: false,
-    transferNote: ""
+    transferNote: "",
+    transferAirport: "N/A",
+    transferTime: "N/A",
+    visaRequirement: "No visa required",
+    riskNote: "No risk - Direct flight"
   },
   {
     airline: "United Airlines",
@@ -30,7 +38,11 @@ const mockFlights = [
     departure: "11:45 AM",
     arrival: "6:55 PM",
     isSelfTransfer: true,
-    transferNote: "Self-transfer at ORD & DEN"
+    transferNote: "Self-transfer at ORD & DEN",
+    transferAirport: "ORD, DEN",
+    transferTime: "1h 45m, 2h 30m",
+    visaRequirement: "No visa required",
+    riskNote: "Medium risk - Multiple transfers, tight connections"
   },
   {
     airline: "Southwest Airlines",
@@ -40,7 +52,11 @@ const mockFlights = [
     departure: "9:00 AM",
     arrival: "2:55 PM",
     isSelfTransfer: true,
-    transferNote: "Self-transfer at MDW"
+    transferNote: "Self-transfer at MDW",
+    transferAirport: "MDW",
+    transferTime: "1h 30m",
+    visaRequirement: "No visa required",
+    riskNote: "Low risk - Single transfer, adequate time"
   }
 ];
 
@@ -125,6 +141,30 @@ function createFlightCard(flight) {
         <div class="price">${flight.price}</div>
       </div>
     </div>
+    
+    <div class="flight-details-expanded">
+      <div class="detail-row">
+        <div class="detail-item">
+          <span class="detail-label">Transfer Airport:</span>
+          <span class="detail-value">${flight.transferAirport}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Transfer Time:</span>
+          <span class="detail-value">${flight.transferTime}</span>
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-item">
+          <span class="detail-label">Visa Requirement:</span>
+          <span class="detail-value">${flight.visaRequirement}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Risk Level:</span>
+          <span class="detail-value risk-${flight.riskNote.toLowerCase().includes('low') ? 'low' : flight.riskNote.toLowerCase().includes('medium') ? 'medium' : 'none'}">${flight.riskNote}</span>
+        </div>
+      </div>
+    </div>
+    
     <button class="select-flight-btn">Select Flight</button>
   `;
   
@@ -225,6 +265,60 @@ style.textContent = `
     font-style: italic;
   }
   
+  .flight-details-expanded {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .detail-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .detail-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .detail-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .detail-value {
+    font-size: 0.95rem;
+    color: #1e293b;
+    font-weight: 500;
+  }
+  
+  .detail-value.risk-low {
+    color: #059669;
+    font-weight: 600;
+  }
+  
+  .detail-value.risk-medium {
+    color: #d97706;
+    font-weight: 600;
+  }
+  
+  .detail-value.risk-none {
+    color: #059669;
+    font-weight: 600;
+  }
+  
   .flight-meta {
     text-align: right;
   }
@@ -293,6 +387,15 @@ style.textContent = `
       flex-direction: column;
       gap: 8px;
       align-items: flex-start;
+    }
+    
+    .detail-row {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .detail-item {
+      margin-bottom: 10px;
     }
   }
 `;
